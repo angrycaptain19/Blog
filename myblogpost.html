@@ -1,0 +1,206 @@
+<!DOCTYPE html>
+<html>
+<title>myblogpost</title>
+<style>
+html {
+
+    background-color: #fff
+    
+    }
+H1 {    font-family: Garamond;
+        font-size: 65px;
+      }
+H2 {    font-family: Garamond;
+        font-size: 25px;
+        font-style: italic;
+        line-height: 0.5;
+      }
+div {
+    padding-top: 50px;
+    padding-right: 30px;
+    padding-bottom: 50px;
+    padding-left: 200px;
+}
+footer {
+  text-align: center;
+  padding: 3px;
+  background-color: rgb(46, 43, 42);
+  color: white;
+}
+ul {
+      list-style-type: none;
+      margin: 0;
+      padding: 0;
+      overflow: hidden;
+      background-color: #333;
+      text-align:center;
+    }
+    
+    li {
+       display:inline-block;
+    }
+    
+    li a {
+      display: flex;
+      color: white;
+      text-align: center;
+      padding: 25px 40px;
+      text-decoration: none;
+      font-size: 18px;
+      color: #fff;
+    }
+    li slider {
+        width: 25%;
+        height: 100%;
+        position: absolute;
+        left: 0;
+        top: 0;
+        background-color: #e74c3c;
+        z-index: 8;
+        transition: left 0.4s, background-color 0.4s;
+}
+    li a:hover:not(.active) {
+        background-color: #111;
+        }
+        
+    .active {
+        background-color: rgb(205, 78, 39);
+        }
+p {
+        font-family: Garamond;
+        font-size: 20px;
+        line-height: 1.6;
+        width: 70%;
+        }
+
+        * {
+      box-sizing: border-box;
+      
+    }
+    
+    .row {
+      scroll-snap-type: x mandatory;
+      overflow-x: scroll;
+      display: flex;
+    }
+    row image {
+      scroll-snap-align: center;
+    }
+    
+    /* Create three equal columns that sits next to each other*/ 
+    .column {
+      flex: 25%;
+      padding: 5px;
+      display:inline-block;
+      width:  200px;
+      height: 150px;
+      background-size: cover;
+    }
+
+</style>  
+<!--- Header -->
+<header role="banner">
+        <img id="logo-main" src="https://s3-us-west-2.amazonaws.com/s.cdpn.io/32877/logo-thing.png" width="200" alt="Logo Thing main logo">
+</header><!-- header role="banner" -->
+<!---Navigation bar -->
+    <body>
+    <ul>
+      <li><a class="active" href="#home">Home</a></li>
+      <li><a href="#default">Reviews</a></li>
+      <li><a href="#default">Gear</a></li>
+      <li><a href="#default">Gaming</a></li>
+      <li><a href="#default">Entertainment</a></li>
+      <li><a href="#default">Products</a></li>
+      <li><a href="#default">Tomorrow</a></li>
+      <li><a href="#default">Audio</a></li>
+      <li><a href="#default">Video</a></li>
+      <li><a href="#default">Deals</a></li>
+    </ul>
+    </body>
+
+<!-- Blog entries -->
+  <!-- Blog entry -->
+  <div>
+      <H1>Norway, The Land of Beauty</H1>
+      <H2>Norway powered by nature.</H2>
+    <div>
+      <img src="images/norway.jpeg" alt="Norway" style="width:70%"  >
+      <figcaption>Reference: Wikipedia </figcaption>
+      <p>Norway has a total area of 385,207 square kilometres (148,729 sq mi) and a population of 5,385,300 as of November 2020. The country shares a long eastern border with Sweden (1,619 km or 1,006 mi long). Norway is bordered by Finland and Russia to the north-east, and the Skagerrak strait to the south, with Denmark on the other side. Norway has an extensive coastline, facing the North Atlantic Ocean and the Barents Sea. The maritime influence also dominates Norway's climate with mild lowland temperatures on the sea coasts, whereas the interior, while colder, is also a lot milder than areas elsewhere in the world on such northerly latitudes. Even during polar night in the north, temperatures above freezing are commonplace on the coastline. The maritime influence brings high rainfall and snowfall to some areas of the country.</p>
+        
+      <p>Harald V of the House of Glucksburg is the current King of Norway. Erna Solberg has been prime minister since 2013 when she replaced Jens Stoltenberg. As a unitary sovereign state with a constitutional monarchy, Norway divides state power between the parliament, the cabinet and the supreme court, as determined by the 1814 constitution. The kingdom was established in 872 as a merger of many petty kingdoms and has existed continuously for 1,149 years. From 1537 to 1814, Norway was a part of the Kingdom of Denmark–Norway, and from 1814 to 1905, it was in a personal union with the Kingdom of Sweden. Norway was neutral during the First World War and remained so until April 1940 when the country was invaded and occupied by Germany until the end of World War II.</p>
+    </div>
+  </div>
+<!-- END BLOG ENTRIES -->
+
+
+  <!-- Comments -->
+ <div>
+		<meta charset="utf-8">
+		<title>Comments System</title>
+		<link href="style.css" rel="stylesheet" type="text/css">
+        <link href="comments.css" rel="stylesheet" type="text/css">
+	    	<div>
+	    		<h2>Join the Conversation</h2>
+        </div>
+        <hr width="80%">
+      <div class="comments"></div>
+      
+      <script>
+      const comments_page_id = 1; // This number should be unique on every page
+      fetch("comments.php?page_id=" + comments_page_id).then(response => response.text()).then(data => {
+          document.querySelector(".comments").innerHTML = data;
+          document.querySelectorAll(".comments .write_comment_btn, .comments .reply_comment_btn").forEach(element => {
+              element.onclick = event => {
+                  event.preventDefault();
+                  document.querySelectorAll(".comments .write_comment").forEach(element => element.style.display = 'none');
+                  document.querySelector("div[data-comment-id='" + element.getAttribute("data-comment-id") + "']").style.display = 'block';
+                  document.querySelector("div[data-comment-id='" + element.getAttribute("data-comment-id") + "'] input[name='name']").focus();
+              };
+          });
+          document.querySelectorAll(".comments .write_comment form").forEach(element => {
+              element.onsubmit = event => {
+                  event.preventDefault();
+                  fetch("comments.php?page_id=" + comments_page_id, {
+                      method: 'POST',
+                      body: new FormData(element)
+                  }).then(response => response.text()).then(data => {
+                      element.parentElement.innerHTML = data;
+                  });
+              };
+          });
+      });
+      </script>
+</div>
+<hr width="80%"> 
+
+<!-- popular articles menu -->  
+  <div>   
+    <h2>Popular Articles</h2>
+    <div class="row">
+        <div class="column">
+        <img src="images/fortune.jpg" alt="Snow" style="width:100%">
+        <p>Some text..</p>
+        </div>
+        <div class="column">
+        <img src="images/muffins.jpg" alt="Forest" style="width:100%">
+        <p>Some text..</p>
+        </div>
+        <div class="column">
+        <img src="images/stock.jpg" alt="Mountains" style="width:100%">
+        <p>Some text..</p>
+        </div>
+        <div class="column">
+            <img src="images/woman.jpg" alt="Mountains" style="width:100%">
+            <p>Some text..</p>
+        </div>
+    </div>
+  </div>
+
+<footer>
+    <p>Author: Manisha Sudhir<br>
+     <a href="mailto:ms8jd@virginia.edu">ms8jd@virginia.edu</a></p>
+</footer>
+
+</body>
+</html>
