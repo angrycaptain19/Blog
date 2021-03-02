@@ -35,9 +35,9 @@ DATABASE_ALIASES = {
     SqliteDatabase: ['sqlite', 'sqlite3'],
 }
 
-DATABASE_MAP = dict((value, key)
-                    for key in DATABASE_ALIASES
-                    for value in DATABASE_ALIASES[key])
+DATABASE_MAP = {
+    value: key for key in DATABASE_ALIASES for value in DATABASE_ALIASES[key]
+}
 
 def make_introspector(database_type, database_name, **kwargs):
     if database_type not in DATABASE_MAP:
@@ -189,7 +189,7 @@ def get_option_parser():
 
 def get_connect_kwargs(options):
     ops = ('host', 'port', 'user', 'schema')
-    kwargs = dict((o, getattr(options, o)) for o in ops if getattr(options, o))
+    kwargs = {o: getattr(options, o) for o in ops if getattr(options, o)}
     if options.password:
         kwargs['password'] = getpass()
     return kwargs
