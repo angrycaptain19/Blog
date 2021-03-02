@@ -16,10 +16,8 @@ def index():
 
 @app.route('/result')
 def res():
-    x = []
     cursor = db.posts
-    for document in cursor.find():
-        x.append(document)
+    x = [document for document in cursor.find()]
     print(x)
     return render_template('new.html',thing = x)
 
